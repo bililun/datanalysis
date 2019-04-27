@@ -20,9 +20,9 @@ public class SongBank implements Sortable {
     public void display() {
         //display the words
         for (int w = 0; w < songbank.size(); w++) {
-            //give x y value
-            int x;
-            int y;
+            //TODO: give x y value
+            int x = 0;
+            int y = 0;
             songbank.get(w).setxy(x, y);
             //display
             songbank.get(w).display(p);
