@@ -17,11 +17,11 @@ public class DataAnalysisMain extends PApplet{
     }
 
     public void setup() {
-        //rapgod is uhh very explicit however i wanted to text an extremely lyrical rap piece so
+        //rapgod is uhh very explicit however i wanted to test an extremely lyrical rap piece so
         bank = new SongBank(this, "data/sugarhoneyhoney.txt");
     }
 
     public void draw() {
-
+        bank.display();
     }
 }

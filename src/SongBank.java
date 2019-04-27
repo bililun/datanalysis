@@ -14,6 +14,28 @@ public class SongBank implements Sortable {
         loadSongBank(filename);
         sort(songbank);
         removeDuplicates();
+        linkToWords();
+    }
+
+    public void display() {
+        //display the words
+        for (int w = 0; w < songbank.size(); w++) {
+            //give x y value
+            int x;
+            int y;
+            songbank.get(w).setxy(x, y);
+            //display
+            songbank.get(w).display(p);
+        }
+        //display arcs between the words
+    }
+
+    private void linkToWords() {
+        //before this, the friends lists in each word only connect to String values
+        //i want to connect each Word to the actual Word s it's friends with
+        for (Word w : songbank) {
+            w.findRealFriends(this);
+        }
     }
 
     private void removeDuplicates() {
@@ -21,6 +43,22 @@ public class SongBank implements Sortable {
         //VERY IMPORTANT THAT IT'S ALREADY SORTED
         //LIKE SUPER IMPORTANT
 
+        int i = 0;
+        while (i < songbank.size()) { //go through the whole songbank
+            Word word = songbank.get(i); //claim the word you're working on
+            String value = word.getValue();
+            //increment i
+            i++;
+            //don't try and reach out of the songbank
+            //while the word you're working on matches the next word
+            while (i < songbank.size() && value.equals(songbank.get(i).getValue())) {
+                Word otherword = songbank.get(i);
+                word.combine(otherword); //add your friends together
+                songbank.remove(i);
+            }
+        }
+        //System.out.println("----------------");
+        printbank();
     }
 
     private void loadSongBank(String filename) {
@@ -37,11 +75,12 @@ public class SongBank implements Sortable {
             //System.out.println("songbank is of size " + songbank.size());
             //System.out.println(" and the last word is " + allWords[i] + " = " + songbank.get(songbank.size()-1).getValue());
             //give the new word friends
-            for (int f = 0; f < numFriends && f+i < allWords.length; f++) {
+            for (int f = 1; f < numFriends && f+i < allWords.length; f++) {
                 //System.out.println("adding number " + f + " friend to " + allWords[i]);
-                songbank.get(songbank.size()-1).addFriends(allWords[i+f]);
+                songbank.get(songbank.size()-1).addFriends(allWords[i+f], f);
             }
         }
+        //printbank();
     }
 
     public ArrayList<Word> sort(ArrayList<Word> whole) {
@@ -102,5 +141,31 @@ public class SongBank implements Sortable {
             wholeIndex++;
             rightIndex++;
         }
+    }
+
+    private void printbank() {
+        for (Word w : songbank) {
+            System.out.println(w.getValue());
+        }
+    }
+
+    public Word find(String value) {
+        int low = 0;
+        int high = songbank.size() - 1;
+
+        while (low <= high) {
+            int mid = (low+high)/2;
+            String current = songbank.get(mid).getValue();
+
+            if (current.equals(value)) {
+                return songbank.get(mid);
+            } else if (current.compareTo(value) < 0) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        System.out.println("Failed to find " + value);
+        return null;
     }
 }
