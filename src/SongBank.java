@@ -1,4 +1,5 @@
 import processing.core.PApplet;
+import processing.core.PConstants;
 
 import java.util.ArrayList;
 
@@ -6,7 +7,9 @@ public class SongBank implements Sortable {
 
     PApplet p;
     private ArrayList<Word> songbank;
-    private int numFriends = 3;
+    private static int NUMFRIENDS = 3;
+    public static float RADIUS;
+    private static float ANGLE;
 
 
     public SongBank(PApplet p, String filename) {
@@ -15,19 +18,53 @@ public class SongBank implements Sortable {
         sort(songbank);
         removeDuplicates();
         linkToWords();
+        RADIUS = (float)(p.width/2.1);
+        ANGLE = p.radians((float)(360.0/songbank.size()));
     }
 
     public void display() {
+        p.push();
         //display the words
+        p.textAlign(PConstants.CENTER);
         for (int w = 0; w < songbank.size(); w++) {
-            //TODO: give x y value
-            int x = 0;
-            int y = 0;
-            songbank.get(w).setxy(x, y);
             //display
-            songbank.get(w).display(p);
+            songbank.get(w).display(p, 0, RADIUS);
+            //give it its x and y
+            songbank.get(w).setxy(RADIUS * p.sin(w*ANGLE), -RADIUS * p.cos(w*ANGLE));
+            //rotate
+            p.rotate(ANGLE);
         }
-        //display arcs between the words
+        p.pop();
+
+        for (Word w : songbank) {
+            w.displaypoint(p);
+        }
+    }
+
+    public void test(int wordnumber) {
+        p.fill(0);
+        System.out.println("Testing " + songbank.get(wordnumber).getValue());
+        p.ellipse(songbank.get(wordnumber).getX(), songbank.get(wordnumber).getY(), 5, 5);
+    }
+
+    public void oneMoreArc(float mouseX, float mouseY) {
+        System.out.println("oneMoreArc called");
+        //finds the closest word to the click and tells that word to draw its arcs
+        Word clickedword = songbank.get(0);
+        float oldDist = p.dist(clickedword.getX(), clickedword.getY(), mouseX, mouseY);
+        System.out.println("original olddist is " + oldDist);
+        for (Word w : songbank) {
+            float newDist = p.dist(w.getX(), w.getY(), mouseX, mouseY);
+            System.out.println(w.getValue() + " distance is " + newDist);
+            if (newDist < oldDist) {
+                //if the new word is closer than the clicked word
+                System.out.println("New clickedword: " + clickedword.getValue());
+                clickedword = w;
+                oldDist = p.dist(clickedword.getX(), clickedword.getY(), mouseX, mouseY);
+            }
+        }
+        System.out.println("clickedword is " + clickedword.getValue());
+        clickedword.drawArcs(p);
     }
 
     private void linkToWords() {
@@ -58,7 +95,7 @@ public class SongBank implements Sortable {
             }
         }
         //System.out.println("----------------");
-        printbank();
+        //printbank();
     }
 
     private void loadSongBank(String filename) {
@@ -75,7 +112,7 @@ public class SongBank implements Sortable {
             //System.out.println("songbank is of size " + songbank.size());
             //System.out.println(" and the last word is " + allWords[i] + " = " + songbank.get(songbank.size()-1).getValue());
             //give the new word friends
-            for (int f = 1; f < numFriends && f+i < allWords.length; f++) {
+            for (int f = 1; f < NUMFRIENDS && f+i < allWords.length; f++) {
                 //System.out.println("adding number " + f + " friend to " + allWords[i]);
                 songbank.get(songbank.size()-1).addFriends(allWords[i+f], f);
             }
@@ -167,5 +204,9 @@ public class SongBank implements Sortable {
         }
         System.out.println("Failed to find " + value);
         return null;
+    }
+
+    public static int getNumFriends() {
+        return NUMFRIENDS;
     }
 }

@@ -32,6 +32,9 @@ public class Friend {
     public int getFrequency() {
         return frequency;
     }
+    public Word getWord() {
+        return word;
+    }
 
     public void setWord(Word word) {
         this.word = word;

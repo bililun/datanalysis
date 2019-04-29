@@ -13,8 +13,9 @@ public class Word {
         value = text;
     }
 
-    public void display(PApplet p) {
+    public void display(PApplet p, float x, float y) {
         p.text(value, x, y);
+        //p.ellipse(x, y-10, 5, 5);
     }
 
     public void addFriends(String friend, int distance) {
@@ -25,6 +26,12 @@ public class Word {
     }
     public ArrayList<Friend> getFriends() {
         return friends;
+    }
+    public float getX() {
+        return x;
+    }
+    public float getY() {
+        return y;
     }
     public void setxy(float x, float y) {
         this.x = x;
@@ -55,5 +62,21 @@ public class Word {
         for (Friend f : friends) {
             f.setWord(songbank.find(f.getValue()));
         }
+    }
+
+    public void drawArcs(PApplet p) {
+        for (Friend f : friends) {
+            drawArc(p, f);
+        }
+    }
+
+    public void drawArc(PApplet p, Friend friend) {
+        p.stroke(p.map(friend.getDistance(), 0, SongBank.getNumFriends(), 0, 100));
+        p.strokeWeight(friend.getFrequency());
+        p.line(x, y, friend.getWord().getX(), friend.getWord().getY());
+    }
+
+    public void displaypoint(PApplet p) {
+        p.ellipse(x, y, 5, 5);
     }
 }
