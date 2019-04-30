@@ -30,40 +30,36 @@ public class SongBank implements Sortable {
             //display
             songbank.get(w).display(p, 0, RADIUS);
             //give it its x and y
-            songbank.get(w).setxy(RADIUS * p.sin(w*ANGLE), -RADIUS * p.cos(w*ANGLE));
+            songbank.get(w).setxy(RADIUS * p.sin(w*ANGLE), RADIUS * p.cos(w*ANGLE));
             //rotate
-            p.rotate(ANGLE);
+            p.rotate(-ANGLE);
         }
         p.pop();
 
-        for (Word w : songbank) {
-            w.displaypoint(p);
-        }
+//        for (Word w : songbank) {
+//            w.displaypoint(p);
+//        }
     }
 
     public void test(int wordnumber) {
         p.fill(0);
         System.out.println("Testing " + songbank.get(wordnumber).getValue());
-        p.ellipse(songbank.get(wordnumber).getX(), songbank.get(wordnumber).getY(), 5, 5);
+        p.ellipse(songbank.get(wordnumber).getX(), songbank.get(wordnumber).getY(), 50, 50);
+        p.ellipse(20, 20, 20, 20);
     }
 
     public void oneMoreArc(float mouseX, float mouseY) {
-        System.out.println("oneMoreArc called");
         //finds the closest word to the click and tells that word to draw its arcs
         Word clickedword = songbank.get(0);
         float oldDist = p.dist(clickedword.getX(), clickedword.getY(), mouseX, mouseY);
-        System.out.println("original olddist is " + oldDist);
         for (Word w : songbank) {
             float newDist = p.dist(w.getX(), w.getY(), mouseX, mouseY);
-            System.out.println(w.getValue() + " distance is " + newDist);
             if (newDist < oldDist) {
                 //if the new word is closer than the clicked word
-                System.out.println("New clickedword: " + clickedword.getValue());
                 clickedword = w;
                 oldDist = p.dist(clickedword.getX(), clickedword.getY(), mouseX, mouseY);
             }
         }
-        System.out.println("clickedword is " + clickedword.getValue());
         clickedword.drawArcs(p);
     }
 
@@ -112,7 +108,7 @@ public class SongBank implements Sortable {
             //System.out.println("songbank is of size " + songbank.size());
             //System.out.println(" and the last word is " + allWords[i] + " = " + songbank.get(songbank.size()-1).getValue());
             //give the new word friends
-            for (int f = 1; f < NUMFRIENDS && f+i < allWords.length; f++) {
+            for (int f = 1; f <= NUMFRIENDS && f+i < allWords.length; f++) {
                 //System.out.println("adding number " + f + " friend to " + allWords[i]);
                 songbank.get(songbank.size()-1).addFriends(allWords[i+f], f);
             }

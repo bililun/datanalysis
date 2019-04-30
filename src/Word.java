@@ -7,10 +7,12 @@ public class Word {
     private String value;
     private ArrayList<Friend> friends; //counts Friends forward from it
     private float x, y;
+    private boolean shownArcs;
 
     public Word(String text) {
         friends = new ArrayList<Friend>();
         value = text;
+        shownArcs = false;
     }
 
     public void display(PApplet p, float x, float y) {
@@ -36,6 +38,11 @@ public class Word {
     public void setxy(float x, float y) {
         this.x = x;
         this.y = y;
+        shrinkxy();
+    }
+    private void shrinkxy() {
+        x *= 0.95;
+        y *= 0.95;
     }
 
     public void combine(Word otherword) {
@@ -65,18 +72,23 @@ public class Word {
     }
 
     public void drawArcs(PApplet p) {
-        for (Friend f : friends) {
-            drawArc(p, f);
+        if (!shownArcs) {
+            for (Friend f : friends) {
+                drawArc(p, f);
+            }
+            shownArcs = true;
+        } else {
+            System.out.println("Arcs already shown for " + value);
         }
     }
 
     public void drawArc(PApplet p, Friend friend) {
-        p.stroke(p.map(friend.getDistance(), 0, SongBank.getNumFriends(), 0, 100));
-        p.strokeWeight(friend.getFrequency());
+        p.stroke(0, p.map(friend.getDistance(), 0, SongBank.getNumFriends(), 100, 50));
+        p.strokeWeight(friend.getFrequency()*4);
         p.line(x, y, friend.getWord().getX(), friend.getWord().getY());
     }
 
     public void displaypoint(PApplet p) {
-        p.ellipse(x, y, 5, 5);
+        p.ellipse(x, y, value.length(), value.length());
     }
 }

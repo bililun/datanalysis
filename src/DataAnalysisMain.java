@@ -17,24 +17,30 @@ public class DataAnalysisMain extends PApplet{
     }
 
     public void setup() {
+        push();
+        translate(width/2, height/2);
         //rapgod is uhh very explicit however i wanted to test an extremely lyrical rap piece so
-        bank = new SongBank(this, "data/sugarhoneyhoney.txt");
+        bank = new SongBank(this, "data/oldtownroad.txt");
         background(255);
         fill(0);
-        translate(width/2, height/2);
         bank.display();
         //displaypoints();
+        pop();
     }
 
     public void draw() {
-
+//        push();
+//        translate(width/2, height/2);
+//        pop();
     }
 
     public void mouseClicked() {
-        System.out.println("Click registered");
-        bank.test(20);
-        bank.oneMoreArc(mouseX, mouseY);
-        System.out.println("Click completed");
+        push();
+        translate(width/2, height/2);
+        //bank.test(12);
+        //subtract width/2 and height/2 to correct for mouseX and mouseY being assigned before translation
+        bank.oneMoreArc(mouseX-width/2, mouseY-height/2);
+        pop();
     }
 
     public void keyPressed() {
