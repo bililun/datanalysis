@@ -17,7 +17,7 @@ public class Friend {
     }
 
     public boolean isSame(Friend otherfriend) {
-        if (value == otherfriend.getValue() && distance == otherfriend.getDistance()) {
+        if (value.equals(otherfriend.getValue()) && distance == otherfriend.getDistance()) {
             return true;
         }
         return false;

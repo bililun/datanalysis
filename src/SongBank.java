@@ -48,7 +48,7 @@ public class SongBank implements Sortable {
         p.ellipse(20, 20, 20, 20);
     }
 
-    public void oneMoreArc(float mouseX, float mouseY) {
+    public void clickArc(float mouseX, float mouseY) {
         //finds the closest word to the click and tells that word to draw its arcs
         Word clickedword = songbank.get(0);
         float oldDist = p.dist(clickedword.getX(), clickedword.getY(), mouseX, mouseY);
@@ -61,6 +61,10 @@ public class SongBank implements Sortable {
             }
         }
         clickedword.drawArcs(p);
+    }
+
+    public void arcWord(int place) {
+        songbank.get(place).drawArcs(p);
     }
 
     private void linkToWords() {
@@ -204,5 +208,9 @@ public class SongBank implements Sortable {
 
     public static int getNumFriends() {
         return NUMFRIENDS;
+    }
+
+    public int getSize() {
+        return songbank.size();
     }
 }

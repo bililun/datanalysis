@@ -48,16 +48,20 @@ public class Word {
     public void combine(Word otherword) {
         //should take otherword which is another occurence of the same-value word
         //combine friends + frequency
-        for (Friend otherf : otherword.getFriends()) { //go through every other friend
+        for (Friend otherf : otherword.getFriends()) { //go through all otherword's friends
             boolean foundMatch = false;
             for (Friend ownf : friends) { //check it against every current friend
-                if (otherf.isSame(ownf)) { //if it's the same, combine them and say we found a match
+                //System.out.println("Checking same: " + otherf.getDistance() + " ?= " + ownf.getDistance() + " and " + otherf.getValue() + " ?= " + ownf.getValue());
+                if (otherf.isSame(ownf)) { //if it's the same distance and word, combine them and say we found a match
+                    //System.out.print("Match. " + ownf.getFrequency() + " + " + otherf.getFrequency());
                     ownf.addFrequency(otherf.getFrequency());
+                    //System.out.println(" = " + ownf.getFrequency());
                     foundMatch = true;
                     break;
                 }
             }
             if (!foundMatch) { //if you never found a match
+                //System.out.println("no match found for " + otherf.getValue());
                 friends.add(otherf); //make it a new friend
             }
         }
@@ -83,8 +87,9 @@ public class Word {
     }
 
     public void drawArc(PApplet p, Friend friend) {
-        p.stroke(0, p.map(friend.getDistance(), 0, SongBank.getNumFriends(), 100, 50));
-        p.strokeWeight(friend.getFrequency()*4);
+        //color: black (alpha 100) for closest friends --> gray (alpha 25) for furthest friends
+        p.stroke(0, p.map(friend.getDistance(), 0, SongBank.getNumFriends(), 100, 25));
+        p.strokeWeight((float)Math.pow(friend.getFrequency(), 1.5));
         p.line(x, y, friend.getWord().getX(), friend.getWord().getY());
     }
 
