@@ -27,7 +27,7 @@ public class DataAnalysisMain extends PApplet{
         //UPDATE RAPGOD IS A BAD IDEA IN ORDER TO FIT ALL THE WORDS THE CANVAS HAS TO BE 8000x8000 AND IT TAKES ABOUT TEN MILLION YEARS AND ALMOST CRASHED MY COMPUTER
         //roxanne is Very repetitive
         //old town road is probably my favorite
-        bank = new SongBank(this, "data/rapgod.txt");
+        bank = new SongBank(this, "data/oldtownroad.txt");
         background(255);
         fill(0);
         bank.display();
