@@ -56,7 +56,7 @@ public class DataAnalysisMain extends PApplet{
 
     public void keyPressed() {
         if (key == 32) {
-            save("/Users/lauren/Desktop/CS/IntelliJ/DataAnalysis/photos/rapgod.png");
+            save("/Users/lauren/Desktop/CS/IntelliJ/DataAnalysis/photos/oldtownroad.png");
         } else if (key == 'g') {
             go = !go;
         }
